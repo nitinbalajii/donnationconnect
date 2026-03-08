@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shelter Homes - DonationConnect</title>
+    <meta name="description"
+        content="Browse partner shelter homes around India to donate food, clothes, and items directly to them.">
+    <script>
+        (function () {
+            if (localStorage.getItem('darkMode') === 'true') {
+                document.documentElement.classList.add('dark-mode');
+            }
+        })();
+    </script>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .page-hero {
+            background: linear-gradient(135deg, var(--carbon, #33383A) 0%, var(--primary-dark, #c94e0e) 100%);
+            color: white;
+            padding: 4rem 1.5rem;
+            text-align: center;
+        }
+
+        .page-hero h1 {
+            color: white;
+            margin-bottom: 1rem;
+            font-size: 2.5rem;
+        }
+
+        .page-hero p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .shelters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .filter-bar {
+            background: var(--background, #fff);
+            border: 1px solid var(--border, #E5E7EB);
+            border-radius: var(--radius-lg, 12px);
+            padding: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: -2rem;
+            position: relative;
+            z-index: 10;
+            box-shadow: var(--shadow-md, 0 4px 6px -1px rgba(0, 0, 0, 0.1));
+        }
+
+        .filter-bar input,
+        .filter-bar select {
+            flex: 1;
+            min-width: 200px;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border, #E5E7EB);
+            border-radius: var(--radius-md, 8px);
+            font-family: inherit;
+            background: var(--background, #fff);
+            color: var(--text, #33383A);
+            font-size: 0.95rem;
+            transition: border-color 0.2s;
+        }
+
+        .filter-bar input:focus,
+        .filter-bar select:focus {
+            outline: none;
+            border-color: var(--primary, #EB6018);
+        }
+
+        .filter-icon-wrapper {
+            position: relative;
+            flex: 2;
+            min-width: 250px;
+        }
+
+        .filter-icon-wrapper i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted, #9CA3AF);
+        }
+
+        .filter-icon-wrapper input {
+            padding-left: 2.5rem;
+            width: 100%;
+        }
+
+        .shelter-card {
+            display: flex;
+            flex-direction: column;
+            background: var(--background, #fff);
+            border: 1px solid var(--border, #E5E7EB);
+            border-radius: var(--radius-lg, 12px);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm, 0 1px 2px 0 rgba(0, 0, 0, 0.05));
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .shelter-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg, 0 10px 15px -3px rgba(0, 0, 0, 0.1));
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="container">
+            <a href="index.html" class="navbar-brand">
+                <i class="fas fa-heart"></i>
+                <span>DonationConnect</span>
+            </a>
+            <nav class="navbar-nav">
+                <a href="donate-items.html">Donate Items</a>
+                <a href="donate-food.html">Donate Food</a>
+                <a href="volunteer.html">Volunteer</a>
+                <a href="shelters.html" class="active">Shelter Homes</a>
+                <a href="about.html">About Us</a>
+            </nav>
+            <div class="navbar-actions">
+                <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <a href="login.html" class="btn btn-outline" id="navLoginBtn">Log In</a>
+                <a href="signup.html" class="btn btn-primary" id="navSignupBtn">Sign Up</a>
+                <a href="#" class="btn btn-outline" id="navDashboardBtn" style="display:none">Dashboard</a>
+            </div>
+            <button id="mobileMenuBtn" class="mobile-toggle d-lg-none" aria-label="Toggle mobile menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <div id="mobileMenu" class="mobile-menu">
+            <a href="donate-items.html">Donate Items</a>
+            <a href="donate-food.html">Donate Food</a>
+            <a href="volunteer.html">Volunteer</a>
+            <a href="shelters.html" class="active">Shelter Homes</a>
+            <a href="about.html">About Us</a>
+        </div>
+    </header>
+
+    <main>
+        <section class="page-hero">
+            <div class="container">
+                <h1>Our Partner Shelters</h1>
+                <p>We work with amazing shelter homes across India to distribute your donations directly to those in
+                    need.</p>
+            </div>
+        </section>
+
+        <section class="container" style="max-width: 1200px; padding: 0 1.5rem;">
+            <!-- Filters -->
+            <div class="filter-bar">
+                <div class="filter-icon-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="search" id="shelterSearch" placeholder="Search shelters by name...">
+                </div>
+                <select id="typeFilter">
+                    <option value="">All Shelter Types</option>
+                    <option value="orphanage">Orphanage</option>
+                    <option value="elderly">Old Age Home</option>
+                    <option value="women">Women's Shelter</option>
+                    <option value="disabled">Special Needs</option>
+                    <option value="rehabilitation">Rehabilitation Center</option>
+                    <option value="general">General Shelter</option>
+                </select>
+                <select id="cityFilter">
+                    <option value="">All Cities</option>
+                    <option value="New Delhi">New Delhi</option>
+                    <option value="Mumbai">Mumbai</option>
+                    <option value="Bengaluru">Bengaluru</option>
+                    <option value="Noida">Noida</option>
+                    <option value="Gurgaon">Gurgaon</option>
+                </select>
+            </div>
+
+            <!-- Loading State -->
+            <div id="sheltersLoading" style="text-align:center; padding: 5rem 0; color: var(--text-light, #6B7280);">
+                <i class="fas fa-spinner fa-spin fa-3x"
+                    style="margin-bottom: 1rem; color: var(--primary, #EB6018);"></i>
+                <p style="font-size: 1.1rem;">Loading shelter partners...</p>
+            </div>
+
+            <!-- Empty State -->
+            <div id="sheltersEmpty"
+                style="display:none; text-align:center; padding: 5rem 0; color: var(--text-light, #6B7280);">
+                <i class="fas fa-home fa-4x" style="margin-bottom: 1.5rem; opacity: 0.3;"></i>
+                <h2 style="margin-bottom: 0.5rem; color: var(--text, #33383A);">No Shelters Found</h2>
+                <p>We couldn't find any shelters matching your filters.</p>
+                <button class="btn btn-outline" style="margin-top: 1rem;"
+                    onclick="document.getElementById('shelterSearch').value=''; document.getElementById('typeFilter').value=''; document.getElementById('cityFilter').value=''; document.getElementById('shelterSearch').dispatchEvent(new Event('input'));">Clear
+                    Filters</button>
+            </div>
+
+            <!-- Grid rendered by JS -->
+            <div id="sheltersGrid" class="shelters-grid"></div>
+        </section>
+
+        <!-- Partner CTA -->
+        <section class="container" style="margin: 4rem auto; max-width: 1200px; padding: 0 1.5rem;">
+            <div class="partner-cta text-center"
+                style="background: var(--background-muted, #ECECEC); padding: 3.5rem 2rem; border-radius: var(--radius-lg, 12px); border: 1px solid var(--border, #E5E7EB);">
+                <i class="fas fa-handshake fa-3x" style="color: var(--primary, #EB6018); margin-bottom: 1.5rem;"></i>
+                <h2 style="margin-bottom: 1rem; color: var(--text, #33383A);">Want to Partner with Us?</h2>
+                <p
+                    style="margin-bottom: 2rem; color: var(--text-muted, #626364); max-width: 600px; margin-left: auto; margin-right: auto;">
+                    If you represent a shelter home and would like to receive direct donations through our platform,
+                    we'd love to partner with you.</p>
+                <a href="about.html#contact" class="btn btn-primary">
+                    Contact Us to Partner
+                    <i class="fas fa-arrow-right" style="margin-left: 0.5rem;"></i>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <div class="footer-brand">
+                        <i class="fas fa-heart"></i>
+                        <span>DonationConnect</span>
+                    </div>
+                    <p class="footer-text">Connecting donors, shelter homes, and volunteers across India to make a
+                        difference in our communities.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="footer-title">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="donate-items.html">Donate Items</a></li>
+                        <li><a href="donate-food.html">Donate Food</a></li>
+                        <li><a href="volunteer.html">Become a Volunteer</a></li>
+                        <li><a href="shelters.html">Partner Shelters</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="footer-title">Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Our Impact</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="footer-title">Contact Us</h3>
+                    <ul class="contact-info">
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>New Delhi 110001, India</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone"></i>
+                            <a href="tel:+911234567890">+91 123 456 7890</a>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:info@donationconnect.in">info@donationconnect.in</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; <span class="current-year"></span> DonationConnect India. All rights reserved. | Developed by <span style="font-weight: 500; color: var(--primary);">Nitin Balajee</span></p>
+                <div class="footer-bottom-links">
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Privacy Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/ui-fixes.js"></script>
+    <script src="js/volunteer-shelters.js"></script>
+</body>
+
+</html>

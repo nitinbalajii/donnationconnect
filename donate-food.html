@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donate Food - DonationConnect</title>
+    <script>
+        // Immediately check for dark mode preference
+        (function () {
+            const isDarkMode = localStorage.getItem('darkMode') === 'true';
+            if (isDarkMode) {
+                document.documentElement.classList.add('dark-mode');
+            }
+        })();
+    </script>
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-family: inherit;
+            font-size: 1rem;
+        }
+
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .radio-option input[type="radio"] {
+            width: auto;
+            margin: 0;
+            padding: 0;
+        }
+
+        .radio-option label {
+            margin: 0;
+            font-weight: normal;
+            line-height: 1.5;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-hint {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            margin-top: 0.5rem;
+        }
+
+        .form-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .tabs {
+            margin-bottom: 2rem;
+        }
+
+        .tab-header {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            background: var(--background-light);
+            padding: 0.5rem;
+            border-radius: var(--radius);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            border-radius: var(--radius);
+            background: transparent;
+            color: var(--text);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tab-btn i {
+            font-size: 1.25rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .tab-btn.active:hover {
+            background: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .tab-pane {
+            display: none;
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+        /* New styles for dietary information */
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .checkbox-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .checkbox-option input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+        }
+
+        .checkbox-option label {
+            margin: 0;
+            font-weight: normal;
+        }
+
+        @media (min-width: 768px) {
+            .form-row {
+                flex-direction: row;
+            }
+
+            .form-row>* {
+                flex: 1;
+            }
+
+            .radio-group {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+
+            .form-buttons {
+                flex-direction: row;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <header class="navbar">
+        <div class="container">
+            <a href="index.html" class="navbar-brand">
+                <i class="fas fa-heart"></i>
+                <span>DonationConnect</span>
+            </a>
+            <nav class="navbar-nav">
+                <a href="donate-items.html">Donate Items</a>
+                <a href="donate-food.html" class="active">Donate Food</a>
+                <a href="volunteer.html">Volunteer</a>
+                <a href="shelters.html">Shelter Homes</a>
+                <a href="about.html">About Us</a>
+            </nav>
+            <div class="navbar-actions">
+                <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <a href="login.html" class="btn btn-outline">Log In</a>
+                <a href="signup.html" class="btn btn-primary">Sign Up</a>
+            </div>
+            <button id="mobileMenuBtn" class="mobile-toggle d-lg-none" aria-label="Toggle mobile menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <div id="mobileMenu" class="mobile-menu">
+            <a href="donate-items.html">Donate Items</a>
+            <a href="donate-food.html" class="active">Donate Food</a>
+            <a href="volunteer.html">Volunteer</a>
+            <a href="shelters.html">Shelter Homes</a>
+            <a href="about.html">About Us</a>
+            <div class="mobile-menu-actions">
+                <a href="login.html" class="btn btn-outline btn-block">Log In</a>
+                <a href="signup.html" class="btn btn-primary btn-block">Sign Up</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <div class="container">
+            <div class="donate-items-content">
+                <div class="donate-items-header" style="padding-left: 32px; padding-right: 32px;">
+                    <a href="index.html" class="return-home-btn" style="padding-left: 32px; padding-right: 32px;">
+                        <i class="fas fa-arrow-left"></i> Return to Home
+                    </a>
+                    <h1 class="donate-items-title">Donate Food</h1>
+                    <p>Help reduce food waste and feed those in need by donating groceries, prepared meals, or
+                        partnering as a food business.</p>
+                </div>
+                <div
+                    style="background-color: var(--background); border-radius: var(--radius); box-shadow: var(--shadow); padding: 0 2rem 2rem; margin-bottom: 3rem;">
+                    <div class="tabs">
+                        <div class="tab-header">
+                            <button class="tab-btn active" data-tab="individual">
+                                <i class="fas fa-user"></i>
+                                Individual Donation
+                            </button>
+                            <button class="tab-btn" data-tab="event">
+                                <i class="fas fa-calendar-alt"></i>
+                                Event Leftover
+                            </button>
+                            <button class="tab-btn" data-tab="business">
+                                <i class="fas fa-building"></i>
+                                Business Partnership
+                            </button>
+                        </div>
+
+                        <!-- Individual Donation Tab -->
+                        <div class="tab-pane active" id="individual">
+                            <form class="donation-form">
+                                <div class="form-section">
+                                    <h3 class="section-title">Food Details</h3>
+                                    <div class="form-group">
+                                        <label for="food-type">Food Type</label>
+                                        <select id="food-type">
+                                            <option value="" disabled selected>Select food type</option>
+                                            <option value="groceries">Groceries & Non-perishables</option>
+                                            <option value="prepared">Prepared Meals</option>
+                                            <option value="baked">Baked Goods</option>
+                                            <option value="produce">Fresh Produce</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="food-description">Description</label>
+                                        <textarea id="food-description"
+                                            placeholder="Describe what you're donating (types of food, quantity, etc.)"></textarea>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Dietary Information</label>
+                                        <div class="checkbox-group"
+                                            style="display: flex; flex-direction: column; gap: 0.75rem;">
+                                            <div class="checkbox-option"
+                                                style="display: flex; align-items: center; gap: 0.5rem;">
+                                                <input type="checkbox" id="vegetarian">
+                                                <label for="vegetarian" style="margin-bottom: 0;">Vegetarian</label>
+                                            </div>
+                                            <div class="checkbox-option"
+                                                style="display: flex; align-items: center; gap: 0.5rem;">
+                                                <input type="checkbox" id="vegan">
+                                                <label for="vegan" style="margin-bottom: 0;">Vegan</label>
+                                            </div>
+                                            <div class="checkbox-option"
+                                                style="display: flex; align-items: center; gap: 0.5rem;">
+                                                <input type="checkbox" id="gluten-free">
+                                                <label for="gluten-free" style="margin-bottom: 0;">Gluten-Free</label>
+                                            </div>
+                                            <div class="checkbox-option"
+                                                style="display: flex; align-items: center; gap: 0.5rem;">
+                                                <input type="checkbox" id="dairy-free">
+                                                <label for="dairy-free" style="margin-bottom: 0;">Dairy-Free</label>
+                                            </div>
+                                            <div class="checkbox-option"
+                                                style="display: flex; align-items: center; gap: 0.5rem;">
+                                                <input type="checkbox" id="nut-free">
+                                                <label for="nut-free" style="margin-bottom: 0;">Nut-Free</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-section">
+                                    <h3 class="section-title">Pickup Information</h3>
+                                    <div class="form-group">
+                                        <label>Pickup Timing</label>
+                                        <div class="radio-group">
+                                            <div class="radio-option">
+                                                <input type="radio" id="today" name="timing" value="today" checked>
+                                                <label for="today">Today</label>
+                                            </div>
+                                            <div class="radio-option">
+                                                <input type="radio" id="tomorrow" name="timing" value="tomorrow">
+                                                <label for="tomorrow">Tomorrow</label>
+                                            </div>
+                                            <div class="radio-option">
+                                                <input type="radio" id="schedule" name="timing" value="schedule">
+                                                <label for="schedule">Schedule Later</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="address">Pickup Address</label>
+                                            <input type="text" id="address" placeholder="Street address">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="city">City</label>
+                                            <input type="text" id="city" placeholder="City">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="state">State</label>
+                                            <input type="text" id="state" placeholder="State">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="zip">ZIP Code</label>
+                                            <input type="text" id="zip" placeholder="ZIP Code">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-section">
+                                    <h3 class="section-title">Additional Information</h3>
+                                    <div class="form-group">
+                                        <label for="notes">Special Instructions</label>
+                                        <textarea id="notes"
+                                            placeholder="Any special instructions for pickup or handling?"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="form-buttons">
+                                    <button type="submit" class="btn btn-primary">Submit Food Donation</button>
+                                    <button type="button" class="btn btn-outline">Save as Draft</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Event Leftover Tab -->
+                        <div class="tab-pane" id="event">
+                            <form class="donation-form">
+                                <div class="form-section">
+                                    <h3>Event Information</h3>
+                                    <div class="form-group">
+                                        <label for="event-type">Event Type</label>
+                                        <select id="event-type">
+                                            <option value="" disabled selected>Select event type</option>
+                                            <option value="wedding">Wedding</option>
+                                            <option value="corporate">Corporate Event</option>
+                                            <option value="party">Party/Celebration</option>
+                                            <option value="conference">Conference</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="event-date">Event Date</label>
+                                            <input type="date" id="event-date">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="pickup-time">Preferred Pickup Time</label>
+                                            <input type="time" id="pickup-time">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="event-location">Event Location</label>
+                                        <input type="text" id="event-location"
+                                            placeholder="Where is the event taking place?">
+                                    </div>
+                                </div>
+
+                                <div class="form-section">
+                                    <h3>Food Details</h3>
+                                    <div class="form-group">
+                                        <label for="event-food-description">Food Description</label>
+                                        <textarea id="event-food-description"
+                                            placeholder="Describe the leftover food (types of dishes, quantity, etc.)"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="form-section">
+                                    <h3>Contact Information</h3>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="event-contact">Contact Person</label>
+                                            <input type="text" id="event-contact"
+                                                placeholder="Name of person to contact at the event">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="event-phone">Contact Phone</label>
+                                            <input type="tel" id="event-phone" placeholder="Phone number">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-buttons">
+                                    <button type="submit" class="btn btn-primary">Schedule Pickup</button>
+                                    <button type="button" class="btn btn-outline">Save as Draft</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Business Partnership Tab -->
+                        <div class="tab-pane" id="business">
+                            <form class="donation-form">
+                                <div class="form-section">
+                                    <h3>Business Information</h3>
+                                    <div class="form-group">
+                                        <label for="business-name">Business Name</label>
+                                        <input type="text" id="business-name"
+                                            placeholder="Name of your restaurant, bakery, grocery store, etc.">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="business-type">Business Type</label>
+                                        <select id="business-type">
+                                            <option value="" disabled selected>Select business type</option>
+                                            <option value="restaurant">Restaurant</option>
+                                            <option value="bakery">Bakery</option>
+                                            <option value="grocery">Grocery Store</option>
+                                            <option value="catering">Catering Service</option>
+                                            <option value="cafe">Café</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-section">
+                                    <h3>Business Location</h3>
+                                    <div class="form-group">
+                                        <label for="business-address">Business Address</label>
+                                        <input type="text" id="business-address" placeholder="Street address">
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="business-city">City</label>
+                                            <input type="text" id="business-city" placeholder="City">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="business-state">State</label>
+                                            <input type="text" id="business-state" placeholder="State">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="business-zip">ZIP Code</label>
+                                        <input type="text" id="business-zip" placeholder="ZIP Code">
+                                    </div>
+                                </div>
+
+                                <div class="form-section">
+                                    <h3>Contact Information</h3>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="contact-name">Contact Person</label>
+                                            <input type="text" id="contact-name"
+                                                placeholder="Name of primary contact person">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="contact-email">Email</label>
+                                            <input type="email" id="contact-email" placeholder="Email address">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="contact-phone">Phone</label>
+                                        <input type="tel" id="contact-phone" placeholder="Phone number">
+                                    </div>
+                                </div>
+
+                                <div class="form-section">
+                                    <h3>Donation Details</h3>
+                                    <div class="form-group">
+                                        <label>Donation Frequency</label>
+                                        <div class="radio-group">
+                                            <div class="radio-option">
+                                                <input type="radio" id="daily" name="frequency" value="daily" checked>
+                                                <label for="daily">Daily</label>
+                                            </div>
+                                            <div class="radio-option">
+                                                <input type="radio" id="weekly" name="frequency" value="weekly">
+                                                <label for="weekly">Weekly</label>
+                                            </div>
+                                            <div class="radio-option">
+                                                <input type="radio" id="monthly" name="frequency" value="monthly">
+                                                <label for="monthly">Monthly</label>
+                                            </div>
+                                            <div class="radio-option">
+                                                <input type="radio" id="as-needed" name="frequency" value="as-needed">
+                                                <label for="as-needed">As Needed</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="business-notes">Additional Information</label>
+                                        <textarea id="business-notes"
+                                            placeholder="Tell us about the types of food you typically have available for donation, any special requirements, etc."></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="form-buttons">
+                                    <button type="submit" class="btn btn-primary">Submit Partnership Request</button>
+                                    <button type="button" class="btn btn-outline">Save as Draft</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <div class="footer-brand">
+                        <i class="fas fa-heart"></i>
+                        <span>DonationConnect</span>
+                    </div>
+                    <p class="footer-text">Connecting donors, shelter homes, and volunteers across India to make a
+                        difference in our communities.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="footer-title">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="donate-items.html">Donate Items</a></li>
+                        <li><a href="donate-food.html">Donate Food</a></li>
+                        <li><a href="volunteer.html">Become a Volunteer</a></li>
+                        <li><a href="shelters.html">Partner Shelters</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="footer-title">Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Testimonials</a></li>
+                        <li><a href="#">Our Impact</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="footer-title">Contact Us</h3>
+                    <ul class="contact-info">
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>123 Donation Street, Connaught Place, New Delhi 110001</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone"></i>
+                            <a href="tel:+911234567890">+91 123 456 7890</a>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:info@donationconnect.in">info@donationconnect.in</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; <span class="current-year"></span> DonationConnect India. All rights reserved. | Developed by <span style="font-weight: 500; color: var(--primary);">Nitin Balajee</span></p>
+                <div class="footer-bottom-links">
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/ui-enhancements.js"></script>
+    <script src="js/donation-forms.js"></script>
+    <script src="js/script.js"></script>
+    <script>
+        // Tab switching functionality
+        document.querySelectorAll('.tab-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons and panes
+                document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+                document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
+
+                // Add active class to clicked button and corresponding pane
+                button.classList.add('active');
+                document.getElementById(button.dataset.tab).classList.add('active');
+            });
+        });
+    </script>
+</body>
+
+</html>

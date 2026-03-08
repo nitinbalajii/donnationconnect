@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - DonationConnect</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .profile-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 3rem;
+            color: white;
+            font-weight: 600;
+        }
+
+        .profile-card {
+            background: var(--background);
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .profile-card h2 {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .profile-info {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .info-row {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
+        .info-value {
+            color: var(--text);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .badge-donor {
+            background: #DBEAFE;
+            color: #1E40AF;
+        }
+
+        .badge-volunteer {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+
+        .badge-shelter {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+
+        .badge-admin {
+            background: #FCE7F3;
+            color: #9F1239;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .info-row {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="container">
+            <a href="index.html" class="navbar-brand">
+                <i class="fas fa-heart"></i>
+                <span>DonationConnect</span>
+            </a>
+            <nav class="navbar-nav">
+                <a href="donate-items.html">Donate Items</a>
+                <a href="donate-food.html">Donate Food</a>
+                <a href="volunteer.html">Volunteer</a>
+                <a href="shelters.html">Shelter Homes</a>
+                <a href="about.html">About Us</a>
+            </nav>
+            <div class="navbar-actions">
+                <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <a href="login.html" class="btn btn-outline">Log In</a>
+                <a href="signup.html" class="btn btn-primary">Sign Up</a>
+            </div>
+            <button id="mobileMenuBtn" class="mobile-toggle d-lg-none" aria-label="Toggle mobile menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <div id="mobileMenu" class="mobile-menu">
+            <a href="donate-items.html">Donate Items</a>
+            <a href="donate-food.html">Donate Food</a>
+            <a href="volunteer.html">Volunteer</a>
+            <a href="shelters.html">Shelter Homes</a>
+            <a href="about.html">About Us</a>
+            <div class="mobile-menu-actions">
+                <a href="login.html" class="btn btn-outline btn-block">Log In</a>
+                <a href="signup.html" class="btn btn-primary btn-block">Sign Up</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <div class="profile-container">
+            <div class="profile-header">
+                <div class="profile-avatar" id="profileAvatar">U</div>
+                <h1 id="profileName">Loading...</h1>
+                <p id="profileEmail" style="color: var(--text-light);"></p>
+            </div>
+
+            <!-- Personal Information -->
+            <div class="profile-card">
+                <h2><i class="fas fa-user"></i> Personal Information</h2>
+                <div class="profile-info" id="personalInfo">
+                    <div class="info-row">
+                        <div class="info-label">Full Name</div>
+                        <div class="info-value" id="infoName">-</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Email</div>
+                        <div class="info-value" id="infoEmail">-</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Role</div>
+                        <div class="info-value" id="infoRole">-</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Phone</div>
+                        <div class="info-value" id="infoPhone">Not provided</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Member Since</div>
+                        <div class="info-value" id="infoJoined">-</div>
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    <a href="edit-profile.html" class="btn btn-primary">
+                        <i class="fas fa-edit"></i> Edit Profile
+                    </a>
+                    <a href="change-password.html" class="btn btn-outline">
+                        <i class="fas fa-key"></i> Change Password
+                    </a>
+                </div>
+            </div>
+
+            <!-- Activity Summary -->
+            <div class="profile-card">
+                <h2><i class="fas fa-chart-line"></i> Activity Summary</h2>
+                <div class="profile-info">
+                    <div class="info-row">
+                        <div class="info-label">Total Donations</div>
+                        <div class="info-value" id="totalDonations">0</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Active Donations</div>
+                        <div class="info-value" id="activeDonations">0</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Completed Donations</div>
+                        <div class="info-value" id="completedDonations">0</div>
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    <a href="dashboard.html" class="btn btn-primary">
+                        <i class="fas fa-tachometer-alt"></i> View Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <div class="footer-brand">
+                        <i class="fas fa-heart"></i>
+                        <span>DonationConnect</span>
+                    </div>
+                    <p class="footer-text">Connecting donors, shelter homes, and volunteers across India.</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span class="current-year"></span> DonationConnect India. All rights reserved. | Developed by <span style="font-weight: 500; color: var(--primary);">Nitin Balajee</span></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Require authentication
+            if (!UserState.requireAuth()) return;
+
+            try {
+                // Fetch user profile
+                const response = await API.auth.getMe();
+
+                if (response.success) {
+                    const user = response.data;
+
+                    // Update profile header
+                    const initials = user.name.split(' ').map(n => n[0]).join('').toUpperCase();
+                    document.getElementById('profileAvatar').textContent = initials;
+                    document.getElementById('profileName').textContent = user.name;
+                    document.getElementById('profileEmail').textContent = user.email;
+
+                    // Update personal info
+                    document.getElementById('infoName').textContent = user.name;
+                    document.getElementById('infoEmail').textContent = user.email;
+
+                    const roleBadge = document.createElement('span');
+                    roleBadge.className = `badge badge-${user.role}`;
+                    roleBadge.textContent = user.role.charAt(0).toUpperCase() + user.role.slice(1);
+                    document.getElementById('infoRole').innerHTML = '';
+                    document.getElementById('infoRole').appendChild(roleBadge);
+
+                    if (user.phone) {
+                        document.getElementById('infoPhone').textContent = user.phone;
+                    }
+
+                    document.getElementById('infoJoined').textContent = new Date(user.createdAt).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    });
+
+                    // Fetch donation stats
+                    const donationsResponse = await API.donations.getMyDonations();
+                    if (donationsResponse.success) {
+                        const donations = donationsResponse.data;
+                        document.getElementById('totalDonations').textContent = donations.length;
+                        document.getElementById('activeDonations').textContent =
+                            donations.filter(d => d.status === 'pending' || d.status === 'accepted').length;
+                        document.getElementById('completedDonations').textContent =
+                            donations.filter(d => d.status === 'delivered').length;
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading profile:', error);
+                showMessage('Failed to load profile', 'error');
+            }
+        });
+    </script>
+    <script src="js/script.js"></script>
+</body>
+
+</html>

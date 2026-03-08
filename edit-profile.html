@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile - DonationConnect</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header class="navbar">
+        <div class="container">
+            <a href="index.html" class="navbar-brand">
+                <i class="fas fa-heart"></i>
+                <span>DonationConnect</span>
+            </a>
+            <nav class="navbar-nav">
+                <a href="donate-items.html">Donate Items</a>
+                <a href="donate-food.html">Donate Food</a>
+                <a href="volunteer.html">Volunteer</a>
+                <a href="shelters.html">Shelter Homes</a>
+                <a href="about.html">About Us</a>
+            </nav>
+            <div class="navbar-actions">
+                <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <a href="login.html" class="btn btn-outline">Log In</a>
+                <a href="signup.html" class="btn btn-primary">Sign Up</a>
+            </div>
+            <button id="mobileMenuBtn" class="mobile-toggle d-lg-none">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <div class="auth-container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h1>Edit Profile</h1>
+                    <p>Update your personal information</p>
+                </div>
+
+                <div class="auth-body">
+                    <div class="form-message"></div>
+
+                    <form id="editProfileForm">
+                        <div class="form-group">
+                            <label for="name" class="form-label">Full Name</label>
+                            <input type="text" id="name" class="form-control" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email" class="form-label">Email Address</label>
+                            <input type="email" id="email" class="form-control" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone" class="form-label">Phone Number</label>
+                            <input type="tel" id="phone" class="form-control" placeholder="Optional">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-block">Update Profile</button>
+                        <a href="profile.html" class="btn btn-outline btn-block">Cancel</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; <span class="current-year"></span> DonationConnect India. All rights reserved. | Developed by <span style="font-weight: 500; color: var(--primary);">Nitin Balajee</span></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (!UserState.requireAuth()) return;
+
+            const form = document.getElementById('editProfileForm');
+
+            // Load current user data
+            try {
+                const response = await API.auth.getMe();
+                if (response.success) {
+                    document.getElementById('name').value = response.data.name;
+                    document.getElementById('email').value = response.data.email;
+                    document.getElementById('phone').value = response.data.phone || '';
+                }
+            } catch (error) {
+                showFormMessage('Failed to load profile', 'error');
+            }
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const phone = document.getElementById('phone').value;
+
+                try {
+                    const submitBtn = form.querySelector('button[type="submit"]');
+                    submitBtn.textContent = 'Updating...';
+                    submitBtn.disabled = true;
+
+                    const response = await API.auth.updateProfile({ name, email, phone });
+
+                    if (response.success) {
+                        showFormMessage('Profile updated successfully!', 'success');
+                        setTimeout(() => {
+                            window.location.href = 'profile.html';
+                        }, 1500);
+                    }
+                } catch (error) {
+                    showFormMessage(error.message || 'Failed to update profile', 'error');
+                    const submitBtn = form.querySelector('button[type="submit"]');
+                    submitBtn.textContent = 'Update Profile';
+                    submitBtn.disabled = false;
+                }
+            });
+        });
+    </script>
+    <script src="js/script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - DonationConnect</title>
+    <script>
+        // Immediately check for dark mode preference
+        (function() {
+            const isDarkMode = localStorage.getItem('darkMode') === 'true';
+            if (isDarkMode) {
+                document.documentElement.classList.add('dark-mode');
+            }
+        })();
+    </script>
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <header class="navbar">
+        <div class="container">
+            <a href="index.html" class="navbar-brand">
+                <i class="fas fa-heart"></i>
+                <span>DonationConnect</span>
+            </a>
+            <nav class="navbar-nav">
+                <a href="donate-items.html">Donate Items</a>
+                <a href="donate-food.html">Donate Food</a>
+                <a href="volunteer.html">Volunteer</a>
+                <a href="shelters.html">Shelter Homes</a>
+                <a href="about.html" class="active">About Us</a>
+            </nav>
+            <div class="navbar-actions">
+                <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <a href="login.html" class="btn btn-outline">Log In</a>
+                <a href="signup.html" class="btn btn-primary">Sign Up</a>
+            </div>
+            <button id="mobileMenuBtn" class="mobile-toggle d-lg-none" aria-label="Toggle mobile menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <div id="mobileMenu" class="mobile-menu">
+            <a href="donate-items.html">Donate Items</a>
+            <a href="donate-food.html">Donate Food</a>
+            <a href="volunteer.html">Volunteer</a>
+            <a href="shelters.html">Shelter Homes</a>
+            <a href="about.html" class="active">About Us</a>
+            <div class="mobile-menu-actions">
+                <a href="login.html" class="btn btn-outline btn-block">Log In</a>
+                <a href="signup.html" class="btn btn-primary btn-block">Sign Up</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="page-hero">
+            <div class="container">
+                <div class="hero-content text-center">
+                    <h1>My Story</h1>
+                    <p class="lead">DonationConnect was created with a simple mission: to bridge the gap between those who want to give and those in need.</p>
+                    <div class="hero-buttons" style="display: flex; justify-content: center; gap: 1rem;">
+                        <a href="volunteer.html" class="btn btn-primary">Join Our Mission</a>
+                        <a href="donate-items.html" class="btn btn-outline">Start Donating</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- My Mission Section -->
+        <section class="about-section">
+            <div class="container">
+                <div class="about-grid">
+                    <div class="about-content">
+                        <h2>My Mission</h2>
+                        <p>I believe that everyone deserves access to basic necessities. My mission is to create an efficient and transparent platform that connects donors with shelter homes and volunteers across Delhi NCR, making it easier for people to contribute to their communities.</p>
+                        <p>I strive to reduce waste, alleviate poverty, and foster a culture of giving by simplifying the donation process and ensuring that resources reach those who need them most.</p>
+                    </div>
+                    <div class="about-image">
+                        <img src="images/mission.jpg" alt="Volunteers distributing donations">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About the Founder Section -->
+        <section class="about-section bg-light">
+            <div class="container">
+                <div class="about-content">
+                    <h2>About the Founder</h2>
+                    <h3>Nitin Balajee</h3>
+                    <p class="member-role" style="margin-top: -1rem; margin-left: 0;">Founder</p>
+                    <p>After witnessing the disconnect between donors and shelter homes during my volunteer work, I founded DonationConnect to bridge this gap and make a meaningful difference in our community.</p>
+                    <p>With a background in social work and technology, I personally manage all aspects of DonationConnect - from website development to shelter partnerships and volunteer coordination. My goal is to create a sustainable platform that makes giving back to the community simple and transparent.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- My Vision Section -->
+        <section class="about-section bg-light">
+            <div class="container">
+                <div class="about-grid reverse">
+                    <div class="about-image">
+                        <img src="images/vission.jpg" alt="Community members working together">
+                    </div>
+                    <div class="about-content">
+                        <h2>My Vision</h2>
+                        <p>I envision a future where no usable item goes to waste, where every donation finds its way to someone who needs it, and where communities come together to support their most vulnerable members.</p>
+                        <p>By 2025, I aim to expand this network to cover all major cities in India, connecting thousands of donors with hundreds of shelter homes and creating a nationwide movement of compassion and resource sharing.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Impact Section -->
+        <section class="about-section">
+            <div class="container">
+                <h2 class="text-center">Making an Impact</h2>
+                <div class="impact-stats">
+                    <div class="stat-card">
+                        <div class="stat-number">5,000+</div>
+                        <div class="stat-label">Donors</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">12,000+</div>
+                        <div class="stat-label">Items Donated</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">30+</div>
+                        <div class="stat-label">Partner Shelters</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">500+</div>
+                        <div class="stat-label">Active Volunteers</div>
+                    </div>
+                </div>
+                <div class="impact-description text-center">
+                    <p>Since starting this initiative, I've made a significant impact across Delhi NCR. This platform has facilitated thousands of donations, helping shelter homes provide better support to those in need while reducing waste and promoting sustainability.</p>
+                    <a href="impact.html" class="btn btn-primary">See Our Full Impact Report</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Partners Section -->
+        <section class="about-section bg-light">
+            <div class="container">
+                <h2 class="text-center">Our Partners</h2>
+                <p class="text-center">I'm proud to work with these organizations to make a difference</p>
+                <div class="partners-grid">
+                    <div class="partner">
+                        <img src="images/partner1.jpg" alt="Delhi NGO Council">
+                    </div>
+                    <div class="partner">
+                        <img src="images/partner2.png" alt="Helping Hands Foundation">
+                    </div>
+                    <div class="partner">
+                        <img src="images/partner3.png" alt="Food Rescue Network">
+                    </div>
+                    <div class="partner">
+                        <img src="images/partner4.png" alt="Community Builders Association">
+                    </div>
+                    <div class="partner">
+                        <img src="images/partner5.png" alt="Delhi Municipal Corporation">
+                    </div>
+                </div>
+                <div class="text-center">
+                    <a href="partners.html" class="btn btn-outline">View All Partners</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <div class="footer-brand">
+                        <i class="fas fa-heart"></i>
+                        <span>DonationConnect</span>
+                    </div>
+                    <p class="footer-text">Connecting donors, shelter homes, and volunteers across India to make a difference in our communities.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="footer-title">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="donate-items.html">Donate Items</a></li>
+                        <li><a href="donate-food.html">Donate Food</a></li>
+                        <li><a href="volunteer.html">Become a Volunteer</a></li>
+                        <li><a href="shelters.html">Partner Shelters</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="footer-title">Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Testimonials</a></li>
+                        <li><a href="#">Our Impact</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:info@donationconnect.in">info@donationconnect.in</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; <span class="current-year"></span> DonationConnect India. All rights reserved. | Developed by <span style="font-weight: 500; color: var(--primary);">Nitin Balajee</span></p>
+                <div class="footer-bottom-links">
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="js/api.js"></script>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

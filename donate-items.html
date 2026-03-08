@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donate Items - DonationConnect</title>
+    <script>
+        // Immediately check for dark mode preference
+        (function () {
+            const isDarkMode = localStorage.getItem('darkMode') === 'true';
+            if (isDarkMode) {
+                document.documentElement.classList.add('dark-mode');
+            }
+        })();
+    </script>
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-family: inherit;
+            font-size: 1rem;
+        }
+
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .radio-option input {
+            width: auto;
+        }
+
+        .photo-upload {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .upload-box {
+            height: 120px;
+            border: 2px dashed var(--border);
+            border-radius: var(--radius);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .upload-box i {
+            font-size: 2rem;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-hint {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            margin-top: 0.5rem;
+        }
+
+        .form-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .form-row {
+                flex-direction: row;
+            }
+
+            .form-row>* {
+                flex: 1;
+            }
+
+            .radio-group {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+
+            .form-buttons {
+                flex-direction: row;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="container">
+            <a href="index.html" class="navbar-brand">
+                <i class="fas fa-heart"></i>
+                <span>DonationConnect</span>
+            </a>
+            <nav class="navbar-nav">
+                <a href="donate-items.html" class="active">Donate Items</a>
+                <a href="donate-food.html">Donate Food</a>
+                <a href="volunteer.html">Volunteer</a>
+                <a href="shelters.html">Shelter Homes</a>
+                <a href="about.html">About Us</a>
+            </nav>
+            <div class="navbar-actions">
+                <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <a href="login.html" class="btn btn-outline">Log In</a>
+                <a href="signup.html" class="btn btn-primary">Sign Up</a>
+            </div>
+            <button id="mobileMenuBtn" class="mobile-toggle d-lg-none" aria-label="Toggle mobile menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <div id="mobileMenu" class="mobile-menu">
+            <a href="donate-items.html" class="active">Donate Items</a>
+            <a href="donate-food.html">Donate Food</a>
+            <a href="volunteer.html">Volunteer</a>
+            <a href="shelters.html">Shelter Homes</a>
+            <a href="about.html">About Us</a>
+            <div class="mobile-menu-actions">
+                <a href="login.html" class="btn btn-outline btn-block">Log In</a>
+                <a href="signup.html" class="btn btn-primary btn-block">Sign Up</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <div class="container">
+            <div class="donate-items-content">
+                <div class="donate-items-header" style="padding-left: 32px; padding-right: 32px;">
+                    <a href="index.html" class="return-home-btn" style="padding-left: 32px; padding-right: 32px;">
+                        <i class="fas fa-arrow-left"></i> Return to Home
+                    </a>
+                    <h1 class="donate-items-title">Donate Items</h1>
+                    <p>List items you'd like to donate. Our partner shelter homes will review your donation and arrange
+                        for pickup.</p>
+                </div>
+                <div
+                    style="background-color: var(--background); border-radius: var(--radius); box-shadow: var(--shadow); padding: 0 2rem; margin-bottom: 3rem;">
+                    <form class="donation-form">
+                        <div class="form-group">
+                            <label for="title">Item Title</label>
+                            <input type="text" id="title"
+                                placeholder="e.g., Winter Clothing Bundle, Children's Books, etc.">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="category">Category</label>
+                                <select id="category">
+                                    <option value="" disabled selected>Select category</option>
+                                    <option value="clothing">Clothing</option>
+                                    <option value="furniture">Furniture</option>
+                                    <option value="electronics">Electronics</option>
+                                    <option value="books">Books & Media</option>
+                                    <option value="toys">Toys & Games</option>
+                                    <option value="household">Household Items</option>
+                                    <option value="food">Non-perishable Food</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="condition">Condition</label>
+                                <select id="condition">
+                                    <option value="" disabled selected>Select condition</option>
+                                    <option value="new">New (with tags)</option>
+                                    <option value="like-new">Like New</option>
+                                    <option value="good">Good</option>
+                                    <option value="fair">Fair</option>
+                                    <option value="poor">Poor</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea id="description"
+                                placeholder="Provide details about your donation (size, color, quantity, etc.)"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Photos</label>
+                            <div class="photo-upload">
+                                <div class="upload-box">
+                                    <i class="fas fa-plus"></i>
+                                    <span>Add Photo</span>
+                                </div>
+                            </div>
+                            <p class="form-hint">Upload up to 4 photos. Clear images help shelter homes understand your
+                                donation better.</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Pickup Availability</label>
+                            <div class="radio-group">
+                                <div class="radio-option">
+                                    <input type="radio" id="flexible" name="pickup" value="flexible" checked>
+                                    <label for="flexible">Flexible (Anytime)</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" id="weekdays" name="pickup" value="weekdays">
+                                    <label for="weekdays">Weekdays Only</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" id="weekends" name="pickup" value="weekends">
+                                    <label for="weekends">Weekends Only</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="address">Pickup Address</label>
+                                <input type="text" id="address" placeholder="Street address">
+                            </div>
+                            <div class="form-group">
+                                <label for="city">City</label>
+                                <input type="text" id="city" placeholder="City">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="state">State</label>
+                                <input type="text" id="state" placeholder="State">
+                            </div>
+                            <div class="form-group">
+                                <label for="zip">ZIP Code</label>
+                                <input type="text" id="zip" placeholder="ZIP Code">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="notes">Additional Notes</label>
+                            <textarea id="notes"
+                                placeholder="Any special instructions for pickup or handling?"></textarea>
+                        </div>
+
+                        <div class="form-buttons">
+                            <button type="submit" class="btn btn-primary">Submit Donation</button>
+                            <button type="button" class="btn btn-outline">Save as Draft</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <div class="footer-brand">
+                        <i class="fas fa-heart"></i>
+                        <span>DonationConnect</span>
+                    </div>
+                    <p class="footer-text">Connecting donors, shelter homes, and volunteers across India to make a
+                        difference in our communities.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="footer-title">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="donate-items.html">Donate Items</a></li>
+                        <li><a href="donate-food.html">Donate Food</a></li>
+                        <li><a href="volunteer.html">Become a Volunteer</a></li>
+                        <li><a href="shelters.html">Partner Shelters</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="footer-title">Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Testimonials</a></li>
+                        <li><a href="#">Our Impact</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="footer-title">Contact Us</h3>
+                    <ul class="contact-info">
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>123 Donation Street, Connaught Place, New Delhi 110001</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone"></i>
+                            <a href="tel:+911234567890">+91 123 456 7890</a>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:info@donationconnect.in">info@donationconnect.in</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; <span class="current-year"></span> DonationConnect India. All rights reserved. | Developed by <span style="font-weight: 500; color: var(--primary);">Nitin Balajee</span></p>
+                <div class="footer-bottom-links">
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/ui-enhancements.js"></script>
+    <script src="js/donation-forms.js"></script>
+    <script src="js/script.js"></script>
+</body>
+
+</html>

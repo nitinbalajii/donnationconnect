@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volunteer Dashboard - DonationConnect</title>
+    <meta name="description" content="Track your volunteer tasks, badges, and impact on DonationConnect.">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        (function () {
+            if (localStorage.getItem('darkMode') === 'true') {
+                document.documentElement.classList.add('dark-mode');
+            }
+        })();
+    </script>
+    <style>
+        .dash-hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2.5rem 0;
+        }
+
+        .dash-hero h1 {
+            margin-bottom: 0.25rem;
+        }
+
+        .dash-hero p {
+            opacity: 0.85;
+            margin: 0;
+        }
+
+        .stat-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            padding: 1.5rem;
+            border-radius: var(--radius, 12px);
+            box-shadow: var(--shadow, 0 2px 12px rgba(0, 0, 0, .08));
+            color: white;
+            text-align: center;
+        }
+
+        .stat-card .icon {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+            display: block;
+            opacity: 0.9;
+        }
+
+        .stat-card .number {
+            font-size: 2.25rem;
+            font-weight: 700;
+            display: block;
+        }
+
+        .stat-card .label {
+            font-size: 0.9rem;
+            opacity: 0.85;
+        }
+
+        .section-card {
+            background: var(--background, #fff);
+            border-radius: var(--radius, 12px);
+            box-shadow: var(--shadow, 0 2px 12px rgba(0, 0, 0, .08));
+            padding: 1.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-card h2 {
+            font-size: 1.2rem;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .badge-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .badge-item {
+            background: rgba(79, 70, 229, 0.08);
+            border: 1px solid rgba(79, 70, 229, 0.2);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            min-width: 100px;
+        }
+
+        .badge-item .badge-icon {
+            font-size: 2rem;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .badge-item .badge-name {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #4F46E5;
+            display: block;
+        }
+
+        .task-item {
+            border: 1px solid var(--border, #E5E7EB);
+            border-radius: 10px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .task-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .task-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .task-body {
+            flex: 1;
+        }
+
+        .task-body h4 {
+            margin: 0 0 0.25rem;
+            font-size: 1rem;
+        }
+
+        .task-body .task-meta {
+            font-size: 0.82rem;
+            color: var(--text-light, #6B7280);
+        }
+
+        .status-badge {
+            padding: 0.2rem 0.6rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-assigned {
+            background: #FEF3C7;
+            color: #D97706;
+        }
+
+        .status-picked-up {
+            background: #DBEAFE;
+            color: #2563EB;
+        }
+
+        .status-in-transit {
+            background: #EDE9FE;
+            color: #7C3AED;
+        }
+
+        .status-delivered {
+            background: #D1FAE5;
+            color: #059669;
+        }
+
+        .status-pending {
+            background: #F3F4F6;
+            color: #6B7280;
+        }
+
+        .profile-not-found {
+            text-align: center;
+            padding: 3rem;
+        }
+
+        .progress-bar-container {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 999px;
+            height: 8px;
+            margin-top: 0.5rem;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: white;
+            height: 100%;
+            border-radius: 999px;
+            transition: width 0.6s ease;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="container">
+            <a href="index.html" class="navbar-brand">
+                <i class="fas fa-heart"></i>
+                <span>DonationConnect</span>
+            </a>
+            <nav class="navbar-nav">
+                <a href="donate-items.html">Donate Items</a>
+                <a href="donate-food.html">Donate Food</a>
+                <a href="volunteer.html">Volunteer</a>
+                <a href="shelters.html">Shelter Homes</a>
+                <a href="about.html">About Us</a>
+            </nav>
+            <div class="navbar-actions">
+                <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <a href="volunteer-dashboard.html" class="btn btn-outline">Dashboard</a>
+                <button id="logoutBtn" class="btn btn-primary">Logout</button>
+            </div>
+            <button id="mobileMenuBtn" class="mobile-toggle d-lg-none" aria-label="Toggle mobile menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <div id="mobileMenu" class="mobile-menu">
+            <a href="donate-items.html">Donate Items</a>
+            <a href="donate-food.html">Donate Food</a>
+            <a href="volunteer.html">Volunteer</a>
+            <a href="shelters.html">Shelter Homes</a>
+            <a href="about.html">About Us</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero / greeting -->
+        <section class="dash-hero">
+            <div class="container">
+                <h1 id="volunteerGreeting">Volunteer Dashboard</h1>
+                <p id="volunteerSubtitle">Track your impact and earn badges</p>
+            </div>
+        </section>
+
+        <div style="max-width:1200px;margin:2rem auto;padding:0 1.5rem">
+
+            <!-- Not-logged-in state -->
+            <div id="notLoggedIn" style="display:none" class="section-card profile-not-found">
+                <i class="fas fa-lock" style="font-size:3rem;color:#9CA3AF;margin-bottom:1rem;display:block"></i>
+                <h2 style="margin-bottom:0.5rem">You need to be logged in</h2>
+                <p style="color:var(--text-light);margin-bottom:1.5rem">Please log in to view your volunteer dashboard.
+                </p>
+                <a href="login.html" class="btn btn-primary">Log In</a>
+            </div>
+
+            <!-- No profile state -->
+            <div id="noProfile" style="display:none" class="section-card profile-not-found">
+                <i class="fas fa-user-plus" style="font-size:3rem;color:#9CA3AF;margin-bottom:1rem;display:block"></i>
+                <h2 style="margin-bottom:0.5rem">No Volunteer Profile Yet</h2>
+                <p style="color:var(--text-light);margin-bottom:1.5rem">You haven't registered as a volunteer yet. Sign
+                    up to start making a difference!</p>
+                <a href="volunteer.html" class="btn btn-primary">Register as Volunteer</a>
+            </div>
+
+            <!-- Dashboard content -->
+            <div id="dashContent" style="display:none">
+                <!-- Stats -->
+                <div class="stat-cards">
+                    <div class="stat-card" style="background:linear-gradient(135deg,#667eea,#764ba2)">
+                        <i class="fas fa-star icon"></i>
+                        <span class="number" id="statPoints">0</span>
+                        <span class="label">Total Points</span>
+                        <div style="margin-top:0.75rem;font-size:0.8rem;opacity:0.8" id="statLevelLabel">Level 1 —
+                            Starter</div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="levelProgress" style="width:0%"></div>
+                        </div>
+                    </div>
+                    <div class="stat-card" style="background:linear-gradient(135deg,#f093fb,#f5576c)">
+                        <i class="fas fa-tasks icon"></i>
+                        <span class="number" id="statTasks">0</span>
+                        <span class="label">Tasks Completed</span>
+                    </div>
+                    <div class="stat-card" style="background:linear-gradient(135deg,#4facfe,#00f2fe)">
+                        <i class="fas fa-clock icon"></i>
+                        <span class="number" id="statHours">0</span>
+                        <span class="label">Hours Volunteered</span>
+                    </div>
+                    <div class="stat-card" style="background:linear-gradient(135deg,#43e97b,#38f9d7)">
+                        <i class="fas fa-star-half-alt icon"></i>
+                        <span class="number" id="statRating">—</span>
+                        <span class="label">Your Rating</span>
+                    </div>
+                </div>
+
+                <!-- Active tasks -->
+                <div class="section-card">
+                    <h2><i class="fas fa-clipboard-list" style="color:#4F46E5"></i> Active Tasks</h2>
+                    <div id="activeTasks">
+                        <p style="text-align:center;padding:1rem;color:var(--text-light)">
+                            <i class="fas fa-spinner fa-spin"></i> Loading tasks...
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Badges -->
+                <div class="section-card">
+                    <h2><i class="fas fa-award" style="color:#F59E0B"></i> Your Badges</h2>
+                    <div id="badgesContainer">
+                        <p style="text-align:center;padding:1rem;color:var(--text-light)">
+                            <i class="fas fa-spinner fa-spin"></i> Loading badges...
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Profile summary -->
+                <div class="section-card">
+                    <h2><i class="fas fa-user-circle" style="color:#10B981"></i> Profile Summary</h2>
+                    <div id="profileSummary">
+                        <p style="text-align:center;padding:1rem;color:var(--text-light)"><i
+                                class="fas fa-spinner fa-spin"></i> Loading...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; <span class="current-year"></span> DonationConnect India. All rights reserved. | Developed by <span style="font-weight: 500; color: var(--primary);">Nitin Balajee</span></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/ui-fixes.js"></script>
+    <script>
+        const LEVEL_NAMES = ['Starter', 'Helper', 'Contributor', 'Champion', 'Hero', 'Legend'];
+        const LEVEL_THRESHOLDS = [0, 50, 150, 350, 700, 1200];
+
+        function getLevelInfo(points) {
+            let level = 1;
+            for (let i = LEVEL_THRESHOLDS.length - 1; i >= 0; i--) {
+                if (points >= LEVEL_THRESHOLDS[i]) { level = i + 1; break; }
+            }
+            const nextThreshold = LEVEL_THRESHOLDS[level] || null;
+            const progress = nextThreshold
+                ? Math.min(100, ((points - LEVEL_THRESHOLDS[level - 1]) / (nextThreshold - LEVEL_THRESHOLDS[level - 1])) * 100)
+                : 100;
+            return { level, name: LEVEL_NAMES[level - 1] || 'Legend', progress, nextThreshold };
+        }
+
+        function getStatusClass(status) {
+            const map = {
+                'assigned': 'status-assigned',
+                'picked-up': 'status-picked-up',
+                'in-transit': 'status-in-transit',
+                'delivered': 'status-delivered'
+            };
+            return map[status] || 'status-pending';
+        }
+
+        function renderTasks(tasks) {
+            const container = document.getElementById('activeTasks');
+            if (!tasks || !tasks.length) {
+                container.innerHTML = `<p style="text-align:center;padding:2rem;color:var(--text-light)">
+                    <i class="fas fa-check-circle" style="font-size:2rem;display:block;margin-bottom:0.5rem"></i>
+                    No active tasks. Check back soon!
+                </p>`;
+                return;
+            }
+            container.innerHTML = tasks.map(task => `
+                <div class="task-item">
+                    <div class="task-icon" style="background:${task.type === 'food' ? '#10B981' : '#4F46E5'}">
+                        <i class="fas ${task.type === 'food' ? 'fa-utensils' : 'fa-box'}"></i>
+                    </div>
+                    <div class="task-body">
+                        <h4>${task.title || 'Donation Task'}</h4>
+                        <div class="task-meta" style="display:flex;flex-wrap:wrap;gap:0.75rem;margin-top:0.3rem">
+                            <span><i class="fas fa-map-marker-alt"></i>
+                                ${task.pickupAddress?.city || 'Location TBD'}, ${task.pickupAddress?.state || ''}
+                            </span>
+                            <span><i class="fas fa-calendar"></i>
+                                ${task.createdAt ? new Date(task.createdAt).toLocaleDateString('en-IN') : ''}
+                            </span>
+                            <span class="status-badge ${getStatusClass(task.status)}">${task.status || 'assigned'}</span>
+                        </div>
+                    </div>
+                    <a href="#" class="btn btn-outline" style="font-size:0.8rem;padding:0.4rem 0.85rem" 
+                       onclick="updateTaskStatus('${task._id}', '${task.status}'); return false;">
+                        Update Status
+                    </a>
+                </div>
+            `).join('');
+        }
+
+        function renderBadges(badges) {
+            const container = document.getElementById('badgesContainer');
+            if (!badges || !badges.length) {
+                container.innerHTML = `<div style="text-align:center;padding:2rem;color:var(--text-light)">
+                    <i class="fas fa-medal" style="font-size:2rem;display:block;margin-bottom:0.5rem"></i>
+                    Complete tasks to earn badges!
+                </div>`;
+                return;
+            }
+            container.innerHTML = `<div class="badge-grid">${badges.map(b => `
+                <div class="badge-item" title="${b.description || ''}">
+                    <span class="badge-icon">${b.icon || '🏅'}</span>
+                    <span class="badge-name">${b.name}</span>
+                </div>
+            `).join('')}</div>`;
+        }
+
+        function renderProfileSummary(volunteer) {
+            const container = document.getElementById('profileSummary');
+            const skills = volunteer.skills?.join(', ') || 'Not specified';
+            const avail = Object.entries(volunteer.availability || {})
+                .filter(([, v]) => v)
+                .map(([k]) => k.charAt(0).toUpperCase() + k.slice(1))
+                .join(', ') || 'Flexible';
+
+            container.innerHTML = `
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem">
+                    <div>
+                        <p style="color:var(--text-light);font-size:0.8rem;margin-bottom:0.25rem">SKILLS</p>
+                        <p style="font-weight:500">${skills}</p>
+                    </div>
+                    <div>
+                        <p style="color:var(--text-light);font-size:0.8rem;margin-bottom:0.25rem">AVAILABILITY</p>
+                        <p style="font-weight:500">${avail}</p>
+                    </div>
+                    <div>
+                        <p style="color:var(--text-light);font-size:0.8rem;margin-bottom:0.25rem">TRANSPORTATION</p>
+                        <p style="font-weight:500">${volunteer.hasTransportation ? '✅ Has Own Vehicle' : '🚶 No Vehicle'}</p>
+                    </div>
+                    <div>
+                        <p style="color:var(--text-light);font-size:0.8rem;margin-bottom:0.25rem">VERIFICATION</p>
+                        <p style="font-weight:500">${volunteer.isVerified ? '✅ Verified' : '⏳ Pending Verification'}</p>
+                    </div>
+                </div>
+                ${volunteer.bio ? `<div style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border)">
+                    <p style="color:var(--text-light);font-size:0.8rem;margin-bottom:0.25rem">BIO</p>
+                    <p>${volunteer.bio}</p>
+                </div>` : ''}
+            `;
+        }
+
+        const STATUS_FLOW = {
+            'assigned': 'picked-up',
+            'picked-up': 'in-transit',
+            'in-transit': 'delivered'
+        };
+
+        async function updateTaskStatus(donationId, currentStatus) {
+            const nextStatus = STATUS_FLOW[currentStatus];
+            if (!nextStatus) { showToast('Task is already completed!', 'info'); return; }
+            if (!confirm(`Mark this task as "${nextStatus}"?`)) return;
+
+            try {
+                await API.donations.updateStatus(donationId, nextStatus);
+                showToast(`Status updated to: ${nextStatus}`, 'success');
+                await loadDashboard();
+            } catch (err) {
+                showToast(err.message || 'Failed to update status', 'error');
+            }
+        }
+
+        async function loadDashboard() {
+            try {
+                const response = await API.volunteers.getMyProfile();
+                const volunteer = response.data;
+
+                // Stats
+                document.getElementById('statPoints').textContent = volunteer.points || 0;
+                document.getElementById('statTasks').textContent = volunteer.completedTasks || 0;
+                document.getElementById('statHours').textContent = volunteer.totalHours || 0;
+                const rating = volunteer.rating?.average;
+                document.getElementById('statRating').textContent = rating ? rating.toFixed(1) + ' ★' : '—';
+
+                // Level
+                const { name, progress } = getLevelInfo(volunteer.points || 0);
+                document.getElementById('statLevelLabel').textContent = `Level ${volunteer.level || 1} — ${name}`;
+                document.getElementById('levelProgress').style.width = progress + '%';
+
+                // Tasks - show assigned tasks from assignedTasks field
+                renderTasks(volunteer.assignedTasks || []);
+                renderBadges(volunteer.badges || []);
+                renderProfileSummary(volunteer);
+
+                // Greeting
+                const user = UserState.getUser();
+                if (user) {
+                    document.getElementById('volunteerGreeting').textContent = `Welcome back, ${user.name.split(' ')[0]}! 👋`;
+                    document.getElementById('volunteerSubtitle').textContent =
+                        volunteer.completedTasks > 0
+                            ? `You've completed ${volunteer.completedTasks} deliveries — you're making a real difference!`
+                            : 'Ready to start volunteering? Check your assigned tasks below.';
+                }
+
+                document.getElementById('dashContent').style.display = 'block';
+
+            } catch (err) {
+                if (err.message?.includes('No volunteer profile')) {
+                    document.getElementById('noProfile').style.display = 'block';
+                } else {
+                    showToast('Failed to load dashboard data', 'error');
+                    console.error(err);
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (!UserState.isLoggedIn()) {
+                document.getElementById('notLoggedIn').style.display = 'block';
+                return;
+            }
+
+            // Set up logout
+            document.getElementById('logoutBtn')?.addEventListener('click', async () => {
+                if (confirm('Logout?')) {
+                    try { await API.auth.logout(); }
+                    catch { localStorage.removeItem('token'); localStorage.removeItem('user'); window.location.href = 'index.html'; }
+                }
+            });
+
+            await loadDashboard();
+        });
+    </script>
+</body>
+
+</html>

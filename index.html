@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DonationConnect - Connect, Donate, Make a Difference</title>
+    <script>
+        // Immediately check for dark mode preference
+        (function () {
+            const isDarkMode = localStorage.getItem('darkMode') === 'true';
+            if (isDarkMode) {
+                document.documentElement.classList.add('dark-mode');
+            }
+        })();
+    </script>
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="container">
+            <a href="index.html" class="navbar-brand">
+                <i class="fas fa-heart"></i>
+                <span>DonationConnect</span>
+            </a>
+            <nav class="navbar-nav">
+                <a href="donate-items.html">Donate Items</a>
+                <a href="donate-food.html">Donate Food</a>
+                <a href="volunteer.html">Volunteer</a>
+                <a href="shelters.html">Shelter Homes</a>
+                <a href="about.html">About Us</a>
+            </nav>
+            <div class="navbar-actions">
+                <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <a href="login.html" class="btn btn-outline">Log In</a>
+                <a href="signup.html" class="btn btn-primary">Sign Up</a>
+            </div>
+            <button id="mobileMenuBtn" class="mobile-toggle d-lg-none" aria-label="Toggle mobile menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <div id="mobileMenu" class="mobile-menu">
+            <a href="donate-items.html">Donate Items</a>
+            <a href="donate-food.html">Donate Food</a>
+            <a href="volunteer.html">Volunteer</a>
+            <a href="shelters.html">Shelter Homes</a>
+            <a href="about.html">About Us</a>
+            <div class="mobile-menu-actions">
+                <a href="login.html" class="btn btn-outline btn-block">Log In</a>
+                <a href="signup.html" class="btn btn-primary btn-block">Sign Up</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="hero-title">Connect, Donate, Make a Difference</h1>
+                    <p class="hero-text">Join our community platform that connects donors with shelter homes and
+                        volunteers across India to help those in need.</p>
+                    <div class="hero-buttons">
+                        <a href="donate-items.html" class="btn btn-primary">
+                            Start Donating
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                        <a href="volunteer.html" class="btn btn-outline">Become a Volunteer</a>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <img src="images/hero/hero-bg.png" alt="People donating and volunteering" width="700"
+                        height="393.750">
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features section">
+            <div class="container">
+                <h2 style="text-align: center; margin-bottom: 2rem;">How It Works</h2>
+
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <h3 class="feature-title">List Your Donation</h3>
+                        <p class="feature-text">Sign up and list items or food you want to donate with photos and
+                            details.</p>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <h3 class="feature-title">Shelter Homes Connect</h3>
+                        <p class="feature-text">Partner shelter homes review and accept donations based on current
+                            needs.</p>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-truck"></i>
+                        </div>
+                        <h3 class="feature-title">Volunteers Deliver</h3>
+                        <p class="feature-text">Certified volunteers pick up donations and deliver them to shelter
+                            homes.</p>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <h3 class="feature-title">Track Your Impact</h3>
+                        <p class="feature-text">See how your donations have helped and get updates from shelter homes.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Donations Section -->
+        <section class="section">
+            <div class="container">
+                <h2 style="text-align: center; margin-bottom: 2rem;">Featured Donations</h2>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <img src="images/donations/winter-clothing.png" alt="Winter Clothing Bundle" class="card-img"
+                            width="800" height="600">
+                        <div class="card-body">
+                            <h3 class="card-title">Winter Clothing Bundle</h3>
+                            <p class="card-text">Bundle of winter clothes including jackets, sweaters, and gloves. All
+                                in good condition.</p>
+                            <a href="#" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <img src="images/donations/children-books.png" alt="Children's Books Collection"
+                            class="card-img" width="800" height="600">
+                        <div class="card-body">
+                            <h3 class="card-title">Children's Books Collection</h3>
+                            <p class="card-text">Collection of 30+ children's books for ages 5-10. Educational and story
+                                books included.</p>
+                            <a href="#" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <img src="images/donations/kitchen-appliances.png" alt="Kitchen Appliances" class="card-img"
+                            width="800" height="600">
+                        <div class="card-body">
+                            <h3 class="card-title">Kitchen Appliances</h3>
+                            <p class="card-text">Mixer grinder, induction cooktop, and electric kettle. All working
+                                perfectly.</p>
+                            <a href="#" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <img src="images/donations/non-perishable-food.png" alt="Non-perishable Food Items"
+                            class="card-img" width="800" height="600">
+                        <div class="card-body">
+                            <h3 class="card-title">Non-perishable Food Items</h3>
+                            <p class="card-text">Rice, dal, atta, and other non-perishable food items. All unexpired and
+                                properly packaged.</p>
+                            <a href="#" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <div class="footer-brand">
+                        <i class="fas fa-heart"></i>
+                        <span>DonationConnect</span>
+                    </div>
+                    <p class="footer-text">Connecting donors, shelter homes, and volunteers across India to make a
+                        difference in our communities.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="footer-title">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="donate-items.html">Donate Items</a></li>
+                        <li><a href="donate-food.html">Donate Food</a></li>
+                        <li><a href="volunteer.html">Become a Volunteer</a></li>
+                        <li><a href="shelters.html">Partner Shelters</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="footer-title">Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Testimonials</a></li>
+                        <li><a href="#">Our Impact</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="footer-title">Contact Us</h3>
+                    <ul class="contact-info">
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>123 Donation Street, Connaught Place, New Delhi 110001</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone"></i>
+                            <a href="tel:+911234567890">+91 123 456 7890</a>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:info@donationconnect.in">info@donationconnect.in</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; <span class="current-year"></span> DonationConnect India. All rights reserved. | Developed by <span style="font-weight: 500; color: var(--primary);">Nitin Balajee</span></p>
+                <div class="footer-bottom-links">
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/ui-enhancements.js"></script>
+    <script src="js/script.js"></script>
+</body>
+
+</html>

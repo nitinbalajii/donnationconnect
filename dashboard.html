@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - DonationConnect</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .dashboard-header {
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--background);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .stat-card i {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .stat-card h3 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card p {
+            color: var(--text-light);
+        }
+
+        .donations-list {
+            background: var(--background);
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .donation-item {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .donation-item:last-child {
+            border-bottom: none;
+        }
+
+        .donation-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 0.5rem;
+        }
+
+        .donation-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .donation-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .status-pending {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+
+        .status-accepted {
+            background: #DBEAFE;
+            color: #1E40AF;
+        }
+
+        .status-picked-up {
+            background: #E0E7FF;
+            color: #4338CA;
+        }
+
+        .status-delivered {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+
+        .donation-meta {
+            color: var(--text-light);
+            font-size: 0.875rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-light);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="navbar">
+        <div class="container">
+            <a href="index.html" class="navbar-brand">
+                <i class="fas fa-heart"></i>
+                <span>DonationConnect</span>
+            </a>
+            <nav class="navbar-nav">
+                <a href="donate-items.html">Donate Items</a>
+                <a href="donate-food.html">Donate Food</a>
+                <a href="volunteer.html">Volunteer</a>
+                <a href="shelters.html">Shelter Homes</a>
+                <a href="about.html">About Us</a>
+            </nav>
+            <div class="navbar-actions">
+                <button id="themeToggle" class="theme-toggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <a href="login.html" class="btn btn-outline">Log In</a>
+                <a href="signup.html" class="btn btn-primary">Sign Up</a>
+            </div>
+            <button id="mobileMenuBtn" class="mobile-toggle d-lg-none">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <div class="dashboard-container">
+            <div class="dashboard-header">
+                <h1>My Dashboard</h1>
+                <p id="welcomeMessage">Welcome back!</p>
+            </div>
+
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <i class="fas fa-box" style="color: #4F46E5;"></i>
+                    <h3 id="totalDonations">0</h3>
+                    <p>Total Donations</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-clock" style="color: #F59E0B;"></i>
+                    <h3 id="pendingDonations">0</h3>
+                    <p>Pending</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-check-circle" style="color: #10B981;"></i>
+                    <h3 id="completedDonations">0</h3>
+                    <p>Completed</p>
+                </div>
+            </div>
+
+            <div class="donations-list">
+                <h2 style="margin-bottom: 1.5rem;">My Donations</h2>
+                <div id="donationsContainer" class="loading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Loading your donations...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; <span class="current-year"></span> DonationConnect India. All rights reserved. | Developed by <span style="font-weight: 500; color: var(--primary);">Nitin Balajee</span></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/dashboard-enhanced.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (!UserState.requireAuth()) return;
+
+            const user = UserState.getUser();
+            document.getElementById('welcomeMessage').textContent = `Welcome back, ${user.name}!`;
+
+            try {
+                const response = await API.donations.getMyDonations();
+                if (response.success) {
+                    const donations = response.data;
+                    document.getElementById('totalDonations').textContent = donations.length;
+                    document.getElementById('pendingDonations').textContent = donations.filter(d => d.status === 'pending' || d.status === 'accepted').length;
+                    document.getElementById('completedDonations').textContent = donations.filter(d => d.status === 'delivered').length;
+
+                    const container = document.getElementById('donationsContainer');
+                    if (donations.length === 0) {
+                        container.innerHTML = `
+                            <div class="empty-state">
+                                <i class="fas fa-box-open"></i>
+                                <h3>No donations yet</h3>
+                                <p>Start making a difference by creating your first donation!</p>
+                                <a href="donate-items.html" class="btn btn-primary" style="margin-top: 1rem;">Donate Now</a>
+                            </div>
+                        `;
+                    } else {
+                        container.innerHTML = donations.map(donation => `
+                            <div class="donation-item">
+                                <div class="donation-header">
+                                    <div class="donation-title">${donation.title}</div>
+                                    <span class="donation-status status-${donation.status}">${donation.status}</span>
+                                </div>
+                                <p>${donation.description}</p>
+                                <div class="donation-meta">
+                                    <i class="fas fa-map-marker-alt"></i> ${donation.pickupAddress.city}, ${donation.pickupAddress.state}
+                                    <span style="margin-left: 1rem;"><i class="fas fa-calendar"></i> ${new Date(donation.createdAt).toLocaleDateString()}</span>
+                                </div>
+                            </div>
+                        `).join('');
+                    }
+                }
+            } catch (error) {
+                document.getElementById('donationsContainer').innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <p>Failed to load donations. Please try again.</p>
+                    </div>
+                `;
+            }
+        });
+    </script>
+    <script src="js/script.js"></script>
+</body>
+
+</html>

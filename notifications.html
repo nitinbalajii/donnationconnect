@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications - DonationConnect</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .notifications-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .notification-item {
+            background: var(--background);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 1rem;
+            align-items: start;
+            transition: all 0.2s;
+        }
+
+        .notification-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .notification-item.unread {
+            border-left: 4px solid var(--primary);
+            background: var(--background-light);
+        }
+
+        .notification-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .icon-success {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+
+        .icon-info {
+            background: #DBEAFE;
+            color: #1E40AF;
+        }
+
+        .icon-warning {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .notification-time {
+            font-size: 0.875rem;
+            color: var(--text-light);
+        }
+
+        .mark-read-btn {
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="navbar">
+        <div class="container">
+            <a href="index.html" class="navbar-brand">
+                <i class="fas fa-heart"></i>
+                <span>DonationConnect</span>
+            </a>
+            <nav class="navbar-nav">
+                <a href="donate-items.html">Donate Items</a>
+                <a href="donate-food.html">Donate Food</a>
+                <a href="volunteer.html">Volunteer</a>
+                <a href="shelters.html">Shelter Homes</a>
+                <a href="about.html">About Us</a>
+            </nav>
+            <div class="navbar-actions">
+                <button id="themeToggle" class="theme-toggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="notifications-container">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h1>Notifications</h1>
+                <button class="btn btn-outline btn-sm" onclick="markAllRead()">
+                    <i class="fas fa-check-double"></i> Mark All Read
+                </button>
+            </div>
+
+            <div id="notificationsContainer">
+                <!-- Sample Notifications -->
+                <div class="notification-item unread">
+                    <div class="notification-icon icon-success">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-title">Donation Accepted!</div>
+                        <p>Your donation "Winter Clothing Bundle" has been accepted by Hope Shelter.</p>
+                        <div class="notification-time">2 hours ago</div>
+                    </div>
+                    <button class="mark-read-btn" onclick="markAsRead(this)">
+                        <i class="fas fa-check"></i>
+                    </button>
+                </div>
+
+                <div class="notification-item unread">
+                    <div class="notification-icon icon-info">
+                        <i class="fas fa-info-circle"></i>
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-title">New Match Found</div>
+                        <p>Your food donation matches the needs of 3 nearby shelters.</p>
+                        <div class="notification-time">5 hours ago</div>
+                    </div>
+                    <button class="mark-read-btn" onclick="markAsRead(this)">
+                        <i class="fas fa-check"></i>
+                    </button>
+                </div>
+
+                <div class="notification-item">
+                    <div class="notification-icon icon-warning">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-title">Pickup Scheduled</div>
+                        <p>Volunteer assigned for pickup tomorrow at 10:00 AM.</p>
+                        <div class="notification-time">1 day ago</div>
+                    </div>
+                </div>
+
+                <div class="notification-item">
+                    <div class="notification-icon icon-success">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-title">Achievement Unlocked!</div>
+                        <p>You've earned the "Generous Donor" badge for 10 donations!</p>
+                        <div class="notification-time">2 days ago</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; <span class="current-year"></span> DonationConnect India. All rights reserved. | Developed by <span style="font-weight: 500; color: var(--primary);">Nitin Balajee</span></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/ui-enhancements.js"></script>
+    <script>
+        function markAsRead(button) {
+            const item = button.closest('.notification-item');
+            item.classList.remove('unread');
+            button.remove();
+            showToast('Marked as read', 'success', 2000);
+        }
+
+        function markAllRead() {
+            document.querySelectorAll('.notification-item.unread').forEach(item => {
+                item.classList.remove('unread');
+                const btn = item.querySelector('.mark-read-btn');
+                if (btn) btn.remove();
+            });
+            showToast('All notifications marked as read', 'success');
+        }
+    </script>
+    <script src="js/script.js"></script>
+</body>
+
+</html>

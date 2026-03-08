@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shelter Dashboard - DonationConnect</title>
+    <meta name="description"
+        content="Manage your shelter profile, accept donations, and track incoming deliveries on DonationConnect.">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        (function () {
+            if (localStorage.getItem('darkMode') === 'true') {
+                document.documentElement.classList.add('dark-mode');
+            }
+        })();
+    </script>
+    <style>
+        .dash-hero {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d6a4f 100%);
+            color: white;
+            padding: 2.5rem 0;
+        }
+
+        .dash-hero h1 {
+            margin-bottom: 0.25rem;
+        }
+
+        .dash-hero p {
+            opacity: 0.85;
+            margin: 0;
+        }
+
+        .stat-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--background, #fff);
+            border-radius: var(--radius, 12px);
+            box-shadow: var(--shadow, 0 2px 12px rgba(0, 0, 0, .08));
+            padding: 1.5rem;
+        }
+
+        .stat-card .icon {
+            font-size: 1.75rem;
+            margin-bottom: 0.75rem;
+            display: block;
+        }
+
+        .stat-card .number {
+            font-size: 2.25rem;
+            font-weight: 700;
+            display: block;
+        }
+
+        .stat-card .label {
+            font-size: 0.85rem;
+            color: var(--text-light, #6B7280);
+        }
+
+        .section-card {
+            background: var(--background, #fff);
+            border-radius: var(--radius, 12px);
+            box-shadow: var(--shadow, 0 2px 12px rgba(0, 0, 0, .08));
+            padding: 1.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-card h2 {
+            font-size: 1.2rem;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .donation-item {
+            border: 1px solid var(--border, #E5E7EB);
+            border-radius: 10px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .donation-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .donation-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .donation-body {
+            flex: 1;
+        }
+
+        .donation-body h4 {
+            margin: 0 0 0.25rem;
+            font-size: 1rem;
+        }
+
+        .donation-body .meta {
+            font-size: 0.82rem;
+            color: var(--text-light, #6B7280);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 0.3rem;
+        }
+
+        .status-badge {
+            padding: 0.2rem 0.6rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background: #F3F4F6;
+            color: #6B7280;
+        }
+
+        .status-accepted {
+            background: #EEF2FF;
+            color: #4F46E5;
+        }
+
+        .status-assigned {
+            background: #FEF3C7;
+            color: #D97706;
+        }
+
+        .status-picked-up {
+            background: #DBEAFE;
+            color: #2563EB;
+        }
+
+        .status-in-transit {
+            background: #EDE9FE;
+            color: #7C3AED;
+        }
+
+        .status-delivered {
+            background: #D1FAE5;
+            color: #059669;
+        }
+
+        .tab-bar {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.25rem;
+            border-bottom: 2px solid var(--border, #E5E7EB);
+            padding-bottom: 0.5rem;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border-radius: 8px 8px 0 0;
+            font-weight: 500;
+            color: var(--text-light, #6B7280);
+            font-size: 0.9rem;
+            font-family: inherit;
+        }
+
+        .tab-btn.active {
+            color: #4F46E5;
+            border-bottom: 2px solid #4F46E5;
+            margin-bottom: -2px;
+        }
+
+        .needs-tag {
+            background: rgba(79, 70, 229, 0.1);
+            color: #4F46E5;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin: 0.2rem;
+        }
+
+        .occupancy-bar-wrap {
+            background: #E5E7EB;
+            border-radius: 999px;
+            height: 10px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .occupancy-bar {
+            height: 100%;
+            border-radius: 999px;
+            background: linear-gradient(90deg, #4F46E5, #7C3AED);
+        }
+
+        .profile-not-found {
+            text-align: center;
+            padding: 3rem;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="container">
+            <a href="index.html" class="navbar-brand">
+                <i class="fas fa-heart"></i>
+                <span>DonationConnect</span>
+            </a>
+            <nav class="navbar-nav">
+                <a href="donate-items.html">Donate Items</a>
+                <a href="donate-food.html">Donate Food</a>
+                <a href="volunteer.html">Volunteer</a>
+                <a href="shelters.html">Shelter Homes</a>
+                <a href="about.html">About Us</a>
+            </nav>
+            <div class="navbar-actions">
+                <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <a href="shelter-dashboard.html" class="btn btn-outline">Dashboard</a>
+                <button id="logoutBtn" class="btn btn-primary">Logout</button>
+            </div>
+            <button id="mobileMenuBtn" class="mobile-toggle d-lg-none" aria-label="Toggle mobile menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <div id="mobileMenu" class="mobile-menu">
+            <a href="donate-items.html">Donate Items</a>
+            <a href="donate-food.html">Donate Food</a>
+            <a href="volunteer.html">Volunteer</a>
+            <a href="shelters.html">Shelter Homes</a>
+            <a href="about.html">About Us</a>
+        </div>
+    </header>
+
+    <main>
+        <section class="dash-hero">
+            <div class="container">
+                <h1 id="shelterGreeting">Shelter Dashboard</h1>
+                <p id="shelterSubtitle">Manage donations and track incoming deliveries</p>
+            </div>
+        </section>
+
+        <div style="max-width:1200px;margin:2rem auto;padding:0 1.5rem">
+
+            <!-- Not logged in -->
+            <div id="notLoggedIn" style="display:none" class="section-card profile-not-found">
+                <i class="fas fa-lock" style="font-size:3rem;color:#9CA3AF;margin-bottom:1rem;display:block"></i>
+                <h2 style="margin-bottom:0.5rem">You need to be logged in</h2>
+                <p style="color:var(--text-light);margin-bottom:1.5rem">Please log in to view your shelter dashboard.
+                </p>
+                <a href="login.html" class="btn btn-primary">Log In</a>
+            </div>
+
+            <!-- No shelter profile -->
+            <div id="noProfile" style="display:none" class="section-card profile-not-found">
+                <i class="fas fa-home" style="font-size:3rem;color:#9CA3AF;margin-bottom:1rem;display:block"></i>
+                <h2 style="margin-bottom:0.5rem">No Shelter Profile Yet</h2>
+                <p style="color:var(--text-light);margin-bottom:1.5rem">Your account doesn't have a shelter profile.
+                    Register your shelter to start receiving donations.</p>
+                <a href="about.html#contact" class="btn btn-primary">Contact Us to Register</a>
+            </div>
+
+            <!-- Dashboard -->
+            <div id="dashContent" style="display:none">
+
+                <!-- Stats -->
+                <div class="stat-cards">
+                    <div class="stat-card">
+                        <i class="fas fa-box icon" style="color:#4F46E5"></i>
+                        <span class="number" id="statAccepted">0</span>
+                        <span class="label">Donations Accepted</span>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-truck icon" style="color:#F59E0B"></i>
+                        <span class="number" id="statIncoming">0</span>
+                        <span class="label">In Transit / Pending</span>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-check-circle icon" style="color:#10B981"></i>
+                        <span class="number" id="statDelivered">0</span>
+                        <span class="label">Delivered</span>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-star icon" style="color:#F59E0B"></i>
+                        <span class="number" id="statRating">—</span>
+                        <span class="label">Rating</span>
+                    </div>
+                </div>
+
+                <!-- Occupancy -->
+                <div class="section-card">
+                    <h2><i class="fas fa-users" style="color:#4F46E5"></i> Occupancy</h2>
+                    <div style="display:flex;justify-content:space-between;align-items:center">
+                        <span id="occupancyLabel">Loading...</span>
+                        <span id="occupancyPercent" style="font-weight:700;color:#4F46E5">—</span>
+                    </div>
+                    <div class="occupancy-bar-wrap">
+                        <div class="occupancy-bar" id="occupancyBar" style="width:0%"></div>
+                    </div>
+                </div>
+
+                <!-- Donations tabs -->
+                <div class="section-card">
+                    <h2><i class="fas fa-hand-holding-heart" style="color:#10B981"></i> Donations</h2>
+                    <div class="tab-bar">
+                        <button class="tab-btn active" id="tabAvailable" onclick="switchTab('available')">
+                            Available <span id="availableBadge" class="needs-tag" style="background:#EEF2FF">...</span>
+                        </button>
+                        <button class="tab-btn" id="tabAccepted" onclick="switchTab('accepted')">
+                            My Accepted
+                        </button>
+                        <button class="tab-btn" id="tabDelivered" onclick="switchTab('delivered')">
+                            Delivered
+                        </button>
+                    </div>
+
+                    <div id="tabContentAvailable">
+                        <p style="text-align:center;padding:2rem;color:var(--text-light)"><i
+                                class="fas fa-spinner fa-spin"></i> Loading...</p>
+                    </div>
+                    <div id="tabContentAccepted" style="display:none">
+                        <p style="text-align:center;padding:2rem;color:var(--text-light)"><i
+                                class="fas fa-spinner fa-spin"></i> Loading...</p>
+                    </div>
+                    <div id="tabContentDelivered" style="display:none">
+                        <p style="text-align:center;padding:2rem;color:var(--text-light)"><i
+                                class="fas fa-spinner fa-spin"></i> Loading...</p>
+                    </div>
+                </div>
+
+                <!-- Current needs -->
+                <div class="section-card">
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem">
+                        <h2 style="margin:0"><i class="fas fa-clipboard-list" style="color:#F59E0B"></i> Current Needs
+                        </h2>
+                        <button class="btn btn-outline" style="font-size:0.85rem" onclick="toggleNeedsEdit()">
+                            <i class="fas fa-edit"></i> Edit Needs
+                        </button>
+                    </div>
+                    <div id="needsDisplay">
+                        <p style="text-align:center;padding:1rem;color:var(--text-light)"><i
+                                class="fas fa-spinner fa-spin"></i> Loading...</p>
+                    </div>
+                    <div id="needsEdit" style="display:none;margin-top:1rem">
+                        <textarea id="needsInput" rows="3"
+                            style="width:100%;padding:0.75rem;border:1px solid var(--border);border-radius:8px;font-family:inherit;resize:vertical"
+                            placeholder="Enter needs separated by commas (e.g. clothes, food, medicine)"></textarea>
+                        <div style="margin-top:0.75rem;display:flex;gap:0.75rem">
+                            <button class="btn btn-primary" onclick="saveNeeds()">Save</button>
+                            <button class="btn btn-outline" onclick="toggleNeedsEdit()">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; <span class="current-year"></span> DonationConnect India. All rights reserved. | Developed by <span style="font-weight: 500; color: var(--primary);">Nitin Balajee</span></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/ui-fixes.js"></script>
+    <script>
+        let shelterData = null;
+        let allDonations = { available: [], accepted: [], delivered: [] };
+        let activeTab = 'available';
+
+        function getStatusClass(status) {
+            return 'status-' + (status || 'pending').replace(/\s/g, '-');
+        }
+
+        function switchTab(tab) {
+            activeTab = tab;
+            ['available', 'accepted', 'delivered'].forEach(t => {
+                document.getElementById('tabContent' + capitalize(t)).style.display = t === tab ? 'block' : 'none';
+                document.getElementById('tab' + capitalize(t)).classList.toggle('active', t === tab);
+            });
+        }
+
+        function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+
+        function renderDonationList(containerId, donations, showAcceptBtn = false) {
+            const container = document.getElementById(containerId);
+            if (!donations.length) {
+                container.innerHTML = `<p style="text-align:center;padding:2rem;color:var(--text-light)">
+                    <i class="fas fa-inbox" style="font-size:2rem;display:block;margin-bottom:0.5rem"></i>
+                    No donations in this category.
+                </p>`;
+                return;
+            }
+            container.innerHTML = donations.map(d => `
+                <div class="donation-item">
+                    <div class="donation-icon" style="background:${d.type === 'food' ? '#10B981' : '#4F46E5'}">
+                        <i class="fas ${d.type === 'food' ? 'fa-utensils' : 'fa-box'}"></i>
+                    </div>
+                    <div class="donation-body">
+                        <h4>${d.title || 'Donation'}</h4>
+                        <div class="meta">
+                            <span><i class="fas fa-tag"></i> ${d.category || d.type}</span>
+                            <span><i class="fas fa-boxes"></i> Qty: ${d.quantity || 1}</span>
+                            <span><i class="fas fa-map-marker-alt"></i> ${d.pickupAddress?.city || 'TBD'}, ${d.pickupAddress?.state || ''}</span>
+                            <span><i class="fas fa-calendar"></i> ${d.createdAt ? new Date(d.createdAt).toLocaleDateString('en-IN') : ''}</span>
+                            <span class="status-badge ${getStatusClass(d.status)}">${d.status || 'pending'}</span>
+                        </div>
+                    </div>
+                    ${showAcceptBtn ? `
+                    <button class="btn btn-primary" style="font-size:0.8rem;padding:0.4rem 0.85rem;white-space:nowrap"
+                        onclick="acceptDonation('${d._id}')">
+                        <i class="fas fa-check"></i> Accept
+                    </button>` : ''}
+                </div>
+            `).join('');
+        }
+
+        async function acceptDonation(donationId) {
+            if (!confirm('Accept this donation for your shelter?')) return;
+            try {
+                await API.donations.accept(donationId, shelterData._id);
+                showToast('Donation accepted! Volunteers will be assigned.', 'success');
+                await loadDashboard();
+            } catch (err) {
+                showToast(err.message || 'Failed to accept donation', 'error');
+            }
+        }
+
+        function renderNeeds(needs) {
+            const display = document.getElementById('needsDisplay');
+            if (!needs || !needs.length) {
+                display.innerHTML = `<p style="color:var(--text-light)">No needs specified. Click "Edit Needs" to add what your shelter needs.</p>`;
+            } else {
+                display.innerHTML = needs.map(n => `<span class="needs-tag">${n}</span>`).join('');
+            }
+        }
+
+        function toggleNeedsEdit() {
+            const edit = document.getElementById('needsEdit');
+            const isShowing = edit.style.display !== 'none';
+            edit.style.display = isShowing ? 'none' : 'block';
+            if (!isShowing && shelterData?.currentNeeds) {
+                document.getElementById('needsInput').value = shelterData.currentNeeds.join(', ');
+            }
+        }
+
+        async function saveNeeds() {
+            const val = document.getElementById('needsInput').value;
+            const needs = val.split(',').map(n => n.trim()).filter(Boolean);
+            try {
+                await API.shelters.updateNeeds(shelterData._id, needs);
+                shelterData.currentNeeds = needs;
+                renderNeeds(needs);
+                toggleNeedsEdit();
+                showToast('Needs updated successfully!', 'success');
+            } catch (err) {
+                showToast(err.message || 'Failed to update needs', 'error');
+            }
+        }
+
+        async function loadDashboard() {
+            try {
+                // Load shelter profile
+                const shelterRes = await API.shelters.getMyShelter();
+                shelterData = shelterRes.data;
+
+                // Greet
+                const user = UserState.getUser();
+                document.getElementById('shelterGreeting').textContent = `Welcome, ${shelterData.name}!`;
+                document.getElementById('shelterSubtitle').textContent =
+                    user ? `Logged in as ${user.name} — ${shelterData.address?.city || 'India'}` : 'Manage your shelter';
+
+                // Occupancy
+                const occ = shelterData.currentOccupancy || 0;
+                const cap = shelterData.capacity || 1;
+                const pct = Math.min(100, Math.round((occ / cap) * 100));
+                document.getElementById('occupancyLabel').textContent = `${occ} / ${cap} residents`;
+                document.getElementById('occupancyPercent').textContent = `${pct}%`;
+                document.getElementById('occupancyBar').style.width = pct + '%';
+
+                // Rating
+                const rating = shelterData.rating?.average;
+                document.getElementById('statRating').textContent = rating ? rating.toFixed(1) + ' ★' : '—';
+
+                // Stats from API
+                try {
+                    const statsRes = await API.shelters.getStats(shelterData._id);
+                    const stats = statsRes.data;
+                    document.getElementById('statAccepted').textContent = stats.totalDonationsReceived;
+                    document.getElementById('statIncoming').textContent = stats.pendingDonations;
+                    document.getElementById('statDelivered').textContent = stats.totalDonationsReceived;
+                } catch { /* stats endpoint optional */ }
+
+                // Load donations from my shelter's accepted donations
+                const accepted = shelterData.acceptedDonations || [];
+                allDonations.accepted = accepted.filter(d => d.status && !['delivered', 'cancelled'].includes(d.status));
+                allDonations.delivered = accepted.filter(d => d.status === 'delivered');
+
+                // Count stats from accepted donations
+                document.getElementById('statAccepted').textContent = accepted.length;
+                document.getElementById('statIncoming').textContent = allDonations.accepted.length;
+                document.getElementById('statDelivered').textContent = allDonations.delivered.length;
+
+                // Available donations (public, pending)
+                const availRes = await API.donations.getAll({ status: 'pending' });
+                allDonations.available = availRes.data || [];
+                document.getElementById('availableBadge').textContent = allDonations.available.length;
+
+                renderDonationList('tabContentAvailable', allDonations.available, true);
+                renderDonationList('tabContentAccepted', allDonations.accepted, false);
+                renderDonationList('tabContentDelivered', allDonations.delivered, false);
+                renderNeeds(shelterData.currentNeeds);
+
+                document.getElementById('dashContent').style.display = 'block';
+
+            } catch (err) {
+                if (err.message?.includes('No shelter profile')) {
+                    document.getElementById('noProfile').style.display = 'block';
+                } else {
+                    showToast('Failed to load dashboard data', 'error');
+                    console.error(err);
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (!UserState.isLoggedIn()) {
+                document.getElementById('notLoggedIn').style.display = 'block';
+                return;
+            }
+
+            document.getElementById('logoutBtn')?.addEventListener('click', async () => {
+                if (confirm('Logout?')) {
+                    try { await API.auth.logout(); }
+                    catch { localStorage.removeItem('token'); localStorage.removeItem('user'); window.location.href = 'index.html'; }
+                }
+            });
+
+            await loadDashboard();
+        });
+    </script>
+</body>
+
+</html>
